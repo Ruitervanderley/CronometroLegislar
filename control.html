@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Controle do Cronômetro</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        #controls { display: flex; justify-content: center; gap: 10px; margin-top: 50px; }
+        button { font-size: 1.2em; padding: 10px 20px; }
+        input { font-size: 1.2em; padding: 10px; width: 60px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div id="controls">
+        <input type="number" id="timeInput" min="0" value="120">
+        <button onclick="start()">Iniciar</button>
+        <button onclick="stop()">Parar</button>
+        <button onclick="reset()">Resetar</button>
+    </div>
+    <script>
+        function sendMessage(action, time = 0) {
+            const frames = [document.getElementById('display1').contentWindow, document.getElementById('display2').contentWindow];
+            frames.forEach(frame => frame.postMessage({ action, time }, '*'));
+        }
+
+        function start() {
+            const time = parseInt(document.getElementById('timeInput').value, 10);
+            sendMessage('start', time);
+        }
+
+        function stop() {
+            sendMessage('stop');
+        }
+
+        function reset() {
+            sendMessage('reset');
+        }
+    </script>
+</body>
+</html>
